@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     public void OnPlayerDisconnect(NetworkClient networkClient)
     {
+       
         if(playerList.ContainsKey(networkClient.networkID))
         {
             Destroy(playerList[networkClient.networkID]);
