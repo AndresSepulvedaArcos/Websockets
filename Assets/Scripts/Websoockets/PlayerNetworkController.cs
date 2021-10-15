@@ -5,6 +5,17 @@ using UnityEngine;
 
 public class PlayerNetworkController : MonoBehaviour
 {
+    public NetworkClient networkClient;
+    public bool isLocalControlled;
+
+
+    public void InitializePlayer(Player player)
+    {
+        networkClient=player.networkClient;
+
+        isLocalControlled=networkClient.networkID==NetworkManager.Instance.networkClient.networkID;
+
+    }
 
     private void OnEnable()
     {
@@ -36,6 +47,8 @@ public class PlayerNetworkController : MonoBehaviour
 
     public void MovePlayer()
     {
+        if(!isLocalControlled)return;
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(h, v, 0);

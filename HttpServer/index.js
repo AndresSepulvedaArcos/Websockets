@@ -71,7 +71,7 @@ function OnPlayerSpawn(playerID)
 {
   let networkPackage= new FNetworkPackage("OnPlayerSpawn",playerList[playerID].networkClient,JSON.stringify(playerList[playerID]));
   socketList[playerID].send(JSON.stringify(networkPackage));
-  
+ 
 }
 
 function BroadcastMessageAll(message)

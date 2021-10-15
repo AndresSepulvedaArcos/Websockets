@@ -17,7 +17,8 @@ public class GameManager : MonoBehaviour
     {
         Vector3 position=new Vector3(player.position.x,player.position.y,0);
 
-        Instantiate(playerPrefab, position,Quaternion.identity);
+         GameObject obj= Instantiate(playerPrefab, position,Quaternion.identity);
+            obj.GetComponent<PlayerNetworkController>().InitializePlayer(player);
 
     }
 
