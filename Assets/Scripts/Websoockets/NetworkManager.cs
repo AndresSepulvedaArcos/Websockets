@@ -77,12 +77,16 @@ public class NetworkManager : MonoBehaviour
 
     }
 
-    public async void ClientLogin( )
+    public async void ClientLogin(string PlayerName )
     {
         FNetworkPackage networkPackage;
         networkPackage.RPC = "ClientLogin";
         networkPackage.client=  networkClient ;
-        networkPackage.data = JsonConvert.SerializeObject(networkClient);
+        Player player=new Player();
+        player.name=PlayerName;
+        player.networkClient=networkClient;
+
+        networkPackage.data = JsonConvert.SerializeObject(player);
         string jsonPost = JsonConvert.SerializeObject(networkPackage);
         await webSocket.SendText(jsonPost);
     }

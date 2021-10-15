@@ -6,7 +6,7 @@ using UnityEngine;
 public class NetworkClient  
 {
     public string networkID;
-     public string name;
+   
     
 }
 
@@ -15,4 +15,5 @@ public class Player
 {
     public NetworkClient networkClient;
     public FVector2 position;
+    public string name;
 }

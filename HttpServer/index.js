@@ -23,12 +23,18 @@ wss.on('connection', function (socket) {
        
         if(obj.RPC=="ClientLogin")
         { 
+      
+          let tmpPlayer=JSON.parse(obj.data);
+         
+          player.name=tmpPlayer.name;
+
+          playerList[playerID]=player;
           let networkPackage=new FNetworkPackage("ClientLoginCallback",player.networkClient,JSON.stringify(player.networkClient));
          
           socket.send(JSON.stringify(networkPackage));
 
           OnPlayerSpawn(playerID);
- 
+  
          return;
         }
 
@@ -74,21 +80,19 @@ function OnPlayerSpawn(playerID)
   for (const playerId in playerList) {
     playerArray.push(playerList[playerId]);
   }
-
-  console.log(  JSON.stringify(playerArray));
+ 
   let networkPackage= new FNetworkPackage("OnPlayerSpawn",playerList[playerID].networkClient,JSON.stringify(playerArray));
-  socketList[playerID].send(JSON.stringify(networkPackage));
-  console.log(JSON.stringify(playerList));
-
+ 
+  
+  BroadcastMessageAll(JSON.stringify(networkPackage));
 
 }
 
 function BroadcastMessageAll(message)
 {
-  //console.log(socketList);
-  for (const [key, value] of Object.entries(socketList)) {
- //   console.log(key);
-    //value.send(message);
+   for (const playerID in socketList) {
+    socketList[playerID].send(message);
+ 
    }
-   
+
 }
