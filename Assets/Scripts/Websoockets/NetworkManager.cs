@@ -51,9 +51,11 @@ public class NetworkManager : MonoBehaviour
 
         if (serverResponse.RPC == "OnPlayerSpawn")
         {
-            Player player = JsonConvert.DeserializeObject<Player>(serverResponse.data);
+            List<Player> players = JsonConvert.DeserializeObject<List<Player>>(serverResponse.data);
 
-            GameManager.Instance.SpawnPlayer(player);
+            
+
+            GameManager.Instance.SpawnPlayer(players);
             return;
         }
 

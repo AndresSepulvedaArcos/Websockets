@@ -5,7 +5,7 @@ class NetworkClient
     constructor()
     {
         this.networkID=nanoid();
-        this.name; 
+        this.name="asd"; 
      
     }
 }

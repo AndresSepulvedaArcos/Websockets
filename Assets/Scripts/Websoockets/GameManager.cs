@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameObject playerPrefab;
+    public Dictionary<string,GameObject> playerList=new Dictionary<string, GameObject>();
 
     private void Awake()
     {
@@ -13,12 +14,27 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void SpawnPlayer(Player player)
+    public void SpawnPlayer(List<Player> players)
     {
-        Vector3 position=new Vector3(player.position.x,player.position.y,0);
 
-         GameObject obj= Instantiate(playerPrefab, position,Quaternion.identity);
+     
+        for (int i = 0; i < players.Count; i++)
+        {
+            Player player=players[i];
+
+            Debug.Log(player);
+            if (playerList.ContainsKey(player.networkClient.networkID))continue;
+
+            Vector3 position = new Vector3(player.position.x, player.position.y, 0);
+
+            GameObject obj = Instantiate(playerPrefab, position, Quaternion.identity);
             obj.GetComponent<PlayerNetworkController>().InitializePlayer(player);
+
+            playerList.Add(player.networkClient.networkID,obj);
+        }
+
+
+    
 
     }
 

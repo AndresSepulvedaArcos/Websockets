@@ -69,9 +69,18 @@ wss.on('listening',()=>{
 
 function OnPlayerSpawn(playerID)
 {
-  let networkPackage= new FNetworkPackage("OnPlayerSpawn",playerList[playerID].networkClient,JSON.stringify(playerList[playerID]));
-  socketList[playerID].send(JSON.stringify(networkPackage));
  
+  let playerArray=[];
+  for (const playerId in playerList) {
+    playerArray.push(playerList[playerId]);
+  }
+
+  console.log(  JSON.stringify(playerArray));
+  let networkPackage= new FNetworkPackage("OnPlayerSpawn",playerList[playerID].networkClient,JSON.stringify(playerArray));
+  socketList[playerID].send(JSON.stringify(networkPackage));
+  console.log(JSON.stringify(playerList));
+
+
 }
 
 function BroadcastMessageAll(message)
