@@ -26,13 +26,14 @@ wss.on('connection', function (socket) {
       
           let tmpPlayer=JSON.parse(obj.data);
          
-          player.name=tmpPlayer.name;
+          playerList[playerID].name=tmpPlayer.name;
 
-          playerList[playerID]=player;
+         
+        
           let networkPackage=new FNetworkPackage("ClientLoginCallback",player.networkClient,JSON.stringify(player.networkClient));
          
           socket.send(JSON.stringify(networkPackage));
-
+ 
           OnPlayerSpawn(playerID);
   
          return;
@@ -43,9 +44,10 @@ wss.on('connection', function (socket) {
         //  console.log(obj.client);
 
           let playerPosition=JSON.parse(obj.data);
-          
+          playerList[playerID].position=playerPosition;
+          playerList[playerID]=player;
           let networkPackage=new FNetworkPackage("OnPlayerMove",obj.client,obj.data);
-         socket.send(JSON.stringify(networkPackage));
+      //   socket.send(JSON.stringify(networkPackage));
           BroadcastMessageAll(JSON.stringify(networkPackage));
         }
 
@@ -60,7 +62,7 @@ wss.on('connection', function (socket) {
             console.log(`Se has desconectado ${playerID}`);
             let networkPackage=new FNetworkPackage("OnPlayerDisconnect",playerList[playerID].networkClient,JSON.stringify(playerList[playerID].networkClient));
             BroadcastMessageAll(JSON.stringify(networkPackage));
-            
+
             delete(playerList[playerID]);
           delete(socketList[playerID]);
         } 

@@ -46,6 +46,7 @@ public class NetworkManager : MonoBehaviour
         if(serverResponse.RPC== "ClientLoginCallback")
         {
             networkClient=JsonConvert.DeserializeObject<NetworkClient>(serverResponse.data);
+            Debug.Log(networkClient);
             return;
         }
 

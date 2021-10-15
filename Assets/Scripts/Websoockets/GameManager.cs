@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
         {
             Player player=players[i];
 
-           
+           Debug.Log(player.networkClient.networkID);
             if (playerList.ContainsKey(player.networkClient.networkID))continue;
 
             Vector3 position = new Vector3(player.position.x, player.position.y, 0);
