@@ -58,7 +58,10 @@ wss.on('connection', function (socket) {
         if(playerList[playerID]!=undefined)
         {
             console.log(`Se has desconectado ${playerID}`);
-          delete(playerList[playerID]);
+            let networkPackage=new FNetworkPackage("OnPlayerDisconnect",playerList[playerID].networkClient,JSON.stringify(playerList[playerID].networkClient));
+            BroadcastMessageAll(JSON.stringify(networkPackage));
+            
+            delete(playerList[playerID]);
           delete(socketList[playerID]);
         } 
       } catch (error) {

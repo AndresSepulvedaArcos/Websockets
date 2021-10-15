@@ -32,10 +32,17 @@ public class GameManager : MonoBehaviour
 
             playerList.Add(player.networkClient.networkID,obj);
         }
+         
 
+    }
 
-    
+    public void OnPlayerDisconnect(NetworkClient networkClient)
+    {
+        if(playerList.ContainsKey(networkClient.networkID))
+        {
+            Destroy(playerList[networkClient.networkID]);
 
+        }
     }
 
 }
