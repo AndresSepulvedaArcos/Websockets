@@ -9,3 +9,10 @@ public class NetworkClient
      public string name;
     
 }
+
+[System.Serializable]
+public class Player
+{
+    public NetworkClient networkClient;
+    public FVector2 position;
+}

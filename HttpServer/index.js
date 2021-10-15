@@ -1,7 +1,6 @@
-const { Socket } = require('socket.io');
-const { json } = require('stream/consumers');
+ 
 const WebSocket = require('ws') 
-const {Player} = require('./Class/player.js');
+const {NetworkClient, Player} = require('./Class/player.js');
 const {FNetworkPackage}=require('./Class/NetworkData');
 
 
@@ -14,21 +13,21 @@ var socketList=[];
 
 wss.on('connection', function (socket) {
   var player=new Player();
-  playerList[player.id]=player;
-  socketList[player.id]=socket;
+  var playerID=player.networkClient.networkID;
+  playerList[playerID]=player;
+  socketList[playerID]=socket;
+
+ 
    socket.on('message', (data) => {
         let obj=JSON.parse(data);
        
         if(obj.RPC=="ClientLogin")
-        {
-         
-       
-       
-      
-          
-          let networkPackage=new FNetworkPackage("ClientLoginCallback",player,JSON.stringify(player));
+        { 
+          let networkPackage=new FNetworkPackage("ClientLoginCallback",player.networkClient,JSON.stringify(player.networkClient));
          
           socket.send(JSON.stringify(networkPackage));
+
+          OnPlayerSpawn(playerID);
  
          return;
         }
@@ -48,13 +47,13 @@ wss.on('connection', function (socket) {
   }); 
 
   socket.on('close',()=>{
-    return;
+     
       try {
-        if(playerList[this.id]!=undefined)
+        if(playerList[playerID]!=undefined)
         {
-            console.log(`Se has desconectado ${this.nombre}`);
-          delete(playerList[this.id]);
-  
+            console.log(`Se has desconectado ${playerID}`);
+          delete(playerList[playerID]);
+          delete(socketList[playerID]);
         } 
       } catch (error) {
           console.log(error);
@@ -68,6 +67,12 @@ wss.on('listening',()=>{
   console.log('listening on 8080')
 })
 
+function OnPlayerSpawn(playerID)
+{
+  let networkPackage= new FNetworkPackage("OnPlayerSpawn",playerList[playerID].networkClient,JSON.stringify(playerList[playerID]));
+  socketList[playerID].send(JSON.stringify(networkPackage));
+  
+}
 
 function BroadcastMessageAll(message)
 {
